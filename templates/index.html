@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Etusivu</title>
+</head>
+
+<body>
+  <h1> Joukkorahoitus </h1>
+
+  {% if session.username %}
+  <p>
+    Olet kirjautunut nimellä {{ session.username }}
+  </p>
+  {% endif %}
+
+  <p>
+    <a href="/login">Kirjaudu sisään</a>
+    <a href="/register">Luo tunnus</a>
+    <a href="/logout">Kirjaudu ulos</a>
+  </p>
+  <p>
+    <a href="/new_item">Uusi Kampanja</a>
+  </p>
+</body>
+
+</html>

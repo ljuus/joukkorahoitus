@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Uusi kampanja</title>
+</head>
+
+<body>
+  <h1>Uusi kampanja</h1>
+  <form action="/create_item" method="post">
+    <p>
+      Otsikko: <br />
+      <input type="text" name="title" />
+    </p>
+    <p>
+      Kuvaus: <br />
+      <textarea name="description" rows="6" cols="60"></textarea>
+    </p>
+    <p>
+      Tavoitesumma: <br />
+      <input type="text" name="target_sum" size="8" />€
+    </p>
+    <input type="submit" value="Luo kampanja" />
+  </form>
+</body>
+
+</html>
