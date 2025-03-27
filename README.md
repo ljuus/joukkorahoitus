@@ -1,3 +1,7 @@
+## Nykyiset toiminnot
+* Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään/ulos
+* Käyttäjä pystyy lisäämään kampanjoita
+
 # Joukkorahoitus
 
 * Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
