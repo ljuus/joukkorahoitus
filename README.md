@@ -1,6 +1,6 @@
 ## Nykyiset toiminnot
 * Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään/ulos
-* Käyttäjä pystyy lisäämään/muokkaaman omia kampanjoita
+* Käyttäjä pystyy lisäämään/muokkaaman/poistamaan omia kampanjoita
 * Käyttäjä näkee sovellukseen lisätyt kampanjat
 
 # Joukkorahoitus
