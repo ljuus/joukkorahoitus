@@ -1,13 +1,14 @@
 import sqlite3
 from flask import Flask
-from flask import redirect, render_template, request, session
-from werkzeug.security import check_password_hash, generate_password_hash
-import config
-import db
-import items
+from flask import abort, redirect, render_template, request, session
+import config, users, items 
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
+
+def require_login():
+    if "user_id" not in session:
+        return abort(403)
 
 @app.route("/")
 def index():
@@ -38,7 +39,7 @@ def create_item():
     title = request.form["title"]
     description = request.form["description"]
     target_sum = request.form["target_sum"]
-    user_id= session["user_id"]
+    user_id = session["user_id"]
 
     items.add_item(title, description, target_sum, user_id)
     
@@ -72,26 +73,24 @@ def remove_item(item_id):
         else:
             return redirect("/item/" + str(item_id))
 
-@app.route("/register")
+
+@app.route("/register", methods=["POST", "GET"])
 def register():
-    return render_template("register.html")
-
-@app.route("/create", methods=["POST"])
-def create():
-    username = request.form["username"]
-    password1 = request.form["password1"]
-    password2 = request.form["password2"]
-    if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat"
-    password_hash = generate_password_hash(password1)
-
-    try:
-        sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-        db.execute(sql, [username, password_hash])
-    except sqlite3.IntegrityError:
-        return "VIRHE: tunnus on jo varattu"
-
-    return redirect("/")
+    if request.method == "GET":
+        return render_template("register.html")
+    
+    if request.method == "POST":
+        username = request.form["username"]
+        password1 = request.form["password1"]
+        password2 = request.form["password2"]
+        if password1 != password2:
+            return "VIRHE: salasanat eivät ole samat"
+        
+        try:
+            users.create_user(username, password1)
+            return "Tunnus luotu"
+        except sqlite3.IntegrityError:
+            return "VIRHE: tunnus on jo varattu"
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -102,20 +101,19 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
         
-        sql = "SELECT id, password_hash FROM users WHERE username = ?"
-        result = db.query(sql, [username])[0]
-        user_id = result["id"]
-        password_hash = result["password_hash"]
+        user_info = users.check_login(username, password)
 
-        if check_password_hash(password_hash, password):
-            session["user_id"] = user_id
-            session["username"] = username
+        if user_info:
+            session["user_id"] = user_info[0]
+            session["username"] = user_info[1]
             return redirect("/")
         else:
             return "VIRHE: väärä tunnus tai salasana"
 
 @app.route("/logout")
 def logout():
+    require_login()
+
     del session["user_id"]
     del session["username"]
     return redirect("/")
