@@ -3,6 +3,27 @@
 * Käyttäjä pystyy lisäämään/muokkaaman/poistamaan omia kampanjoita
 * Käyttäjä näkee sovellukseen lisätyt kampanjat
 * Käyttäjä pystyy etsimään kampanjoita hakusanalla
+* Käyttäjä pystyy lahjoittamaan kampanjoihin
+
+## Sovelluksen asennus
+
+Asenna 'flask'-kirjasto
+
+'''
+$ pip install flask
+'''
+
+Luo tietokanta
+
+'''
+$ sqlite3 database.db < schema.sql
+'''
+
+Voit käynnistää sovelluksen näin
+
+'''
+$ flask run
+'''
 
 # Joukkorahoitus
 
