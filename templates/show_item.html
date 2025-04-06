@@ -13,12 +13,43 @@
     <a href="/remove_item/{{ item.id }}">Poista</a>
   </p>
   {% endif %}
+
+  {% for message in get_flashed_messages() %}
+  <p>
+    <b>{{ message }}</b>
+  </p>
+  {% endfor %}
+
+
+  {% if session.user_id %}
+  <form action="/create_donation" method="post">
+    <p>
+      Lahjoita kampanjaan: <br />
+      <input type="number" name="donation_amount" min="0.05" step="0.05" size="8" required />€
+    <p/>
+    <input type="hidden" name="item_id" value="{{ item.id }}" />
+    <input type="submit" value="Lahjoita" />
+  </form>
+  {% endif %}
+
   <p>
     {{ item.description }}
   </p>
   <p>
     Tavoitesumma: {{ item.target_sum }} €
   </p>
+  {% if total_donations %}
+  <p>
+    Rahaa kerätty: {{ total_donations }} €
+  </p>
+  <p>
+    Matkaa tavoitesummaan: {{ to_target_sum }} €
+  </p>
+  {% else %}
+  <p>
+    Ei vielä yhtään rahaa kerätty
+  </p>
+  {% endif %}
   <p>
     Kampanjan perustaja: {{ item.username }}
   </p>

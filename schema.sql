@@ -9,5 +9,14 @@ CREATE TABLE items (
     title TEXT,
     description TEXT,
     target_sum INTEGER,
-    user_id INTEGER REFERENCES users
+    user_id INTEGER REFERENCES users,
+    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE donations (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER REFERENCES users,
+    item_id INTEGER REFERENCES items,
+    amount INTEGER,
+    donation_date DATETIME DEFAULT CURRENT_TIMESTAMP
+)

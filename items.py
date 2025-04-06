@@ -18,7 +18,8 @@ def get_item(item_id):
                     users.id user_id
              FROM items, users
              WHERE items.user_id = users.id AND items.id = ?"""
-    return db.query(sql, [item_id])[0]
+    result = db.query(sql, [item_id])
+    return result[0] if result else None
 
 def update_item(item_id, title, description):
     sql = """UPDATE items SET title = ?,
@@ -27,8 +28,10 @@ def update_item(item_id, title, description):
     return db.execute(sql, [title, description, item_id])
 
 def remove_item(item_id):
-    sql = "DELETE FROM items WHERE id = ?"
-    return db.execute(sql, [item_id])
+    sql = "DELETE FROM donations WHERE donations.item_id = ?"
+    db.execute(sql, [item_id])
+    sql = "DELETE FROM items WHERE items.id = ?"
+    db.execute(sql, [item_id])
 
 def find_items(query):
     sql = """SELECT id, title
@@ -37,3 +40,16 @@ def find_items(query):
              ORDER BY id DESC"""
     like = "%" + query + "%"
     return db.query(sql, [like, like])
+
+def add_donation(user_id, item_id, amount):
+    sql = "INSERT INTO donations (user_id, item_id, amount) VALUES (?, ?, ?)"
+    db.execute(sql, [user_id, item_id, amount])
+
+def get_total_donations(item_id):
+    sql = "SELECT SUM(amount) FROM donations, items WHERE items.id = donations.item_id AND items.id = ?"
+    result = db.query(sql, params=[item_id])[0][0]
+    
+    if result:
+        return round(result / 100, 2)
+    else:
+        return None
