@@ -20,18 +20,6 @@
   </p>
   {% endfor %}
 
-
-  {% if session.user_id %}
-  <form action="/create_donation" method="post">
-    <p>
-      Lahjoita kampanjaan: <br />
-      <input type="number" name="donation_amount" min="0.05" step="0.05" size="8" required />€
-    <p/>
-    <input type="hidden" name="item_id" value="{{ item.id }}" />
-    <input type="submit" value="Lahjoita" />
-  </form>
-  {% endif %}
-
   <p>
     {{ item.description }}
   </p>
@@ -50,9 +38,24 @@
     Ei vielä yhtään rahaa kerätty
   </p>
   {% endif %}
+  {% if category %}
+  <p>
+    Kampanjan kategoria: {{ category }}    
+  </p>
+  {% endif %}
   <p>
     Kampanjan perustaja: <a href="/user/{{ item.user_id }}">{{ item.username }}</a>
   </p>
+  {% if session.user_id %}
+  <form action="/create_donation" method="post">
+    <p>
+      Lahjoita kampanjaan: <br />
+      <input type="number" name="donation_amount" min="0.05" step="0.05" size="8" required />€
+      <input type="submit" value="Lahjoita" />
+    <p/>
+    <input type="hidden" name="item_id" value="{{ item.id }}" />
+  </form>
+  {% endif %}
   <p>
     <a href="/">Takaisin</a>
   </p>

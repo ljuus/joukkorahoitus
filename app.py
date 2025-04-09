@@ -41,13 +41,15 @@ def show_item(item_id):
         abort(404)
     total_donations = items.get_total_donations(item_id)
 
+    category = items.get_category(item_id)
+
     if total_donations:
         to_target_sum = round(item["target_sum"] - total_donations, 2)
     else:
         to_target_sum = item["target_sum"]
     
     return render_template("show_item.html", item=item, total_donations=total_donations, 
-                           to_target_sum=to_target_sum)
+                           to_target_sum=to_target_sum, category=category)
 
 @app.route("/new_item")
 def new_item():
@@ -65,9 +67,17 @@ def create_item():
     target_sum = request.form["target_sum"]
     if not re.search("[1-9][0-9]{0,9}", target_sum):
         abort(403)
+    category = request.form["category"]
+    if category == "":
+        category_id = None
+    else:
+        all_categories = items.get_all_categories()
+        if category not in all_categories:
+            abort(403)
+        category_id = all_categories[category]
     user_id = session["user_id"]
 
-    items.add_item(title, description, target_sum, user_id)
+    items.add_item(title, description, target_sum, user_id, category_id)
     
     return redirect("/")
 

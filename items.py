@@ -1,9 +1,25 @@
 import db
 
-def add_item(title, description, target_sum, user_id):
-    sql = """INSERT INTO items (title, description, target_sum, user_id)
-             VALUES (?, ?, ?, ?)"""
-    db.execute(sql, [title, description, target_sum, user_id])
+def get_all_categories():
+    sql = "SELECT title, id FROM categories ORDER BY id"
+    result = db.query(sql)
+
+    categories = {}
+    for title, id in result:
+        categories[title] = id
+    return categories
+
+def get_category(item_id):
+    sql = """SELECT categories.title from categories, items
+             WHERE items.category_id = categories.id AND
+                   items.id = ?"""
+    result =  db.query(sql, [item_id])
+    return result[0]["title"] if result else None
+
+def add_item(title, description, target_sum, user_id, category_id):
+    sql = """INSERT INTO items (title, description, target_sum, user_id, category_id)
+             VALUES (?, ?, ?, ?, ?)"""
+    db.execute(sql, [title, description, target_sum, user_id, category_id])
 
 def get_items():
     sql = "SELECT id, title FROM items ORDER BY id DESC"
@@ -17,7 +33,8 @@ def get_item(item_id):
                     users.username,
                     users.id user_id
              FROM items, users
-             WHERE items.user_id = users.id AND items.id = ?"""
+             WHERE items.user_id = users.id AND
+                   items.id = ?"""
     result = db.query(sql, [item_id])
     return result[0] if result else None
 
@@ -47,7 +64,7 @@ def add_donation(user_id, item_id, amount):
 
 def get_total_donations(item_id):
     sql = "SELECT SUM(amount) FROM donations, items WHERE items.id = donations.item_id AND items.id = ?"
-    result = db.query(sql, params=[item_id])[0][0]
+    result = db.query(sql, [item_id])[0][0]
     
     if result:
         return round(result / 100, 2)
