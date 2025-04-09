@@ -16,6 +16,14 @@ def index():
     all_items = items.get_items()
     return render_template("index.html", items=all_items)
 
+@app.route("/user/<int:user_id>")
+def show_user(user_id):
+    user = users.get_user(user_id)
+    if not user:
+        abort(404)
+    items = users.get_items(user_id)
+    return render_template("show_user.html", user=user, items=items)
+
 @app.route("/find_item")
 def find_item():
     query = request.args.get("query")
@@ -32,10 +40,12 @@ def show_item(item_id):
     if not item:
         abort(404)
     total_donations = items.get_total_donations(item_id)
+
     if total_donations:
         to_target_sum = round(item["target_sum"] - total_donations, 2)
     else:
         to_target_sum = item["target_sum"]
+    
     return render_template("show_item.html", item=item, total_donations=total_donations, 
                            to_target_sum=to_target_sum)
 
@@ -63,6 +73,7 @@ def create_item():
 
 @app.route("/edit_item/<int:item_id>")
 def edit_item(item_id):
+    require_login()
     item = items.get_item(item_id)
     if not item:
         abort(404)

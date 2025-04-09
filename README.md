@@ -4,6 +4,7 @@
 * Käyttäjä näkee sovellukseen lisätyt kampanjat
 * Käyttäjä pystyy etsimään kampanjoita hakusanalla
 * Käyttäjä pystyy lahjoittamaan kampanjoihin
+* Sovelluksessa on käyttäjäsivut, jotka näyttävät jokaisesta käyttäjästä tilastoja ja käyttäjän lisäämät kampanjat
 
 ## Sovelluksen asennus
 
