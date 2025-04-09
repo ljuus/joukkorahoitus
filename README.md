@@ -15,10 +15,11 @@ Asenna `flask`-kirjasto
 $ pip install flask
 ```
 
-Luo tietokanta
+Luo  ja alusta tietokanta
 
 ```
 $ sqlite3 database.db < schema.sql
+$ sqlite3 database.db < init.sql
 ```
 
 Voit käynnistää sovelluksen näin
