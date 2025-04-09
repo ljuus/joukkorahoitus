@@ -10,21 +10,21 @@
 
 Asenna 'flask'-kirjasto
 
-'''
+```
 $ pip install flask
-'''
+```
 
 Luo tietokanta
 
-'''
+```
 $ sqlite3 database.db < schema.sql
-'''
+```
 
 Voit käynnistää sovelluksen näin
 
-'''
+```
 $ flask run
-'''
+```
 
 # Joukkorahoitus
 
