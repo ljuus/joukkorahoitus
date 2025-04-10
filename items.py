@@ -62,7 +62,14 @@ def add_donation(user_id, item_id, amount):
     sql = "INSERT INTO donations (user_id, item_id, amount) VALUES (?, ?, ?)"
     db.execute(sql, [user_id, item_id, amount])
 
-def get_total_donations(item_id):
+def get_donations(item_id):
+    sql = """SELECT donations.amount, users.id, users.username
+             FROM donations, users
+             WHERE donations.item_id = ? AND donations.user_id = users.id
+             ORDER BY donations.id DESC"""
+    return db.query(sql, [item_id])
+
+def get_donations_sum(item_id):
     sql = "SELECT SUM(amount) FROM donations, items WHERE items.id = donations.item_id AND items.id = ?"
     result = db.query(sql, [item_id])[0][0]
     

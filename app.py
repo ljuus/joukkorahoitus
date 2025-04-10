@@ -39,17 +39,18 @@ def show_item(item_id):
     item = items.get_item(item_id)
     if not item:
         abort(404)
-    total_donations = items.get_total_donations(item_id)
+    donations = items.get_donations(item_id)
+    donations_sum = items.get_donations_sum(item_id)
 
     category = items.get_category(item_id)
 
-    if total_donations:
-        to_target_sum = round(item["target_sum"] - total_donations, 2)
+    if donations_sum:
+        to_target_sum = round(item["target_sum"] - donations_sum, 2)
     else:
         to_target_sum = item["target_sum"]
     
-    return render_template("show_item.html", item=item, total_donations=total_donations, 
-                           to_target_sum=to_target_sum, category=category)
+    return render_template("show_item.html", item=item, donations_sum=donations_sum, 
+                           to_target_sum=to_target_sum, category=category, donations=donations)
 
 @app.route("/new_item")
 def new_item():
