@@ -4,9 +4,12 @@
 
 {% block content %}
 <h2>Kampanjat</h2>
-<ul>
-  {% for item in items %}
-  <li><a href="/item/{{ item.id }}">{{ item.title }}<a/></li>
-  {% endfor %}
-</ul>
+{% for item in items %}
+<div class="item">
+  <a href="/item/{{ item.id }}">{{ item.title }}</a> <br />
+  Perustaja: <a href="/user/{{ item.user_id }}">{{ item.username }}</a> <br />
+  Perustettu: {{ item.creation_date }} <br />
+  Tavoitesumma: {{ item.target_sum }} €
+</div>
+{% endfor %}
 {% endblock %}

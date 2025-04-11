@@ -22,7 +22,14 @@ def add_item(title, description, target_sum, user_id, category_id):
     db.execute(sql, [title, description, target_sum, user_id, category_id])
 
 def get_items():
-    sql = "SELECT id, title FROM items ORDER BY id DESC"
+    sql = """SELECT items.id,
+                    items.title,
+                    items.creation_date,
+                    items.target_sum,
+                    users.id user_id,
+                    users.username
+             FROM items, users WHERE items.user_id = users.id
+             ORDER BY items.id DESC"""
     return db.query(sql)
 
 def get_item(item_id):
