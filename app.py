@@ -41,7 +41,10 @@ def show_item(item_id):
         abort(404)
     donations = items.get_donations(item_id)
     donations_sum = items.get_donations_sum(item_id)
-    distance = item["target_sum"] - donations_sum
+    if donations_sum:
+        distance = item["target_sum"] - donations_sum
+    else:
+        distance = item["target_sum"]
     category = items.get_category(item_id)
     images = items.get_images(item_id)
     

@@ -54,8 +54,11 @@ def update_item(item_id, title, description):
 def remove_item(item_id):
     sql = "DELETE FROM donations WHERE donations.item_id = ?"
     db.execute(sql, [item_id])
+    sql = "DELETE FROM item_images WHERE item_id = ?"
+    db.execute(sql, [item_id])
     sql = "DELETE FROM items WHERE items.id = ?"
     db.execute(sql, [item_id])
+    
 
 def find_items(query):
     sql = """SELECT id, title
