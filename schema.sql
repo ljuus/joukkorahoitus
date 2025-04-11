@@ -1,7 +1,7 @@
 CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     username TEXT UNIQUE,
-    password_hash TEXT
+    password_hash TEXT,
 );
 
 CREATE TABLE categories (
@@ -25,4 +25,10 @@ CREATE TABLE donations (
     item_id INTEGER REFERENCES items,
     amount INTEGER,
     donation_date DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE item_images (
+    id INTEGER PRIMARY KEY,
+    item_id INTEGER REFERENCES items,
+    image BLOB 
 );

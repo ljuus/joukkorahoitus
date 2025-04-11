@@ -77,3 +77,20 @@ def get_donations_sum(item_id):
         return round(result / 100, 2)
     else:
         return None
+    
+def get_images(item_id):
+    sql = "SELECT id FROM item_images WHERE item_id = ?"
+    return db.query(sql, [item_id])
+
+def add_image(item_id, image):
+    sql = "INSERT INTO item_images (item_id, image) VALUES (?, ?)"
+    db.execute(sql, [item_id, image])
+
+def get_image(image_id):
+    sql = "SELECT image FROM item_images WHERE id = ?"
+    result = db.query(sql, [image_id])
+    return result[0][0] if result else None
+
+def remove_image(item_id, image_id):
+    sql = "DELETE FROM item_images WHERE item_id = ? AND id = ?"
+    db.execute(sql, [item_id, image_id])

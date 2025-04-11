@@ -7,17 +7,20 @@
 
 <body>
   <h1>{{ item.title }}</h1>
-  {% if session.user_id == item.user_id %}
-  <p>
-    <a href="/edit_item/{{ item.id }}">Muokkaa</a>
-    <a href="/remove_item/{{ item.id }}">Poista</a>
-  </p>
-  {% endif %}
-
   {% for message in get_flashed_messages() %}
   <p>
     <b>{{ message }}</b>
   </p>
+  {% endfor %}
+  {% if session.user_id == item.user_id %}
+  <p>
+    <a href="/edit_item/{{ item.id }}">Muokkaa</a>
+    <a href="/remove_item/{{ item.id }}">Poista</a>
+    <a href="/images/{{ item.id }}">Kuvat</a>
+  </p>
+  {% endif %}
+  {% for image in images %}
+  <img src="/image/{{ image.id }}" />
   {% endfor %}
 
   <p>
