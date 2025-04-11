@@ -1,73 +1,61 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>{{ item.title }}</title>
-</head>
+{% block title %}{{ item.title }}{% endblock %}
 
-<body>
-  <h1>{{ item.title }}</h1>
-  {% for message in get_flashed_messages() %}
-  <p>
-    <b>{{ message }}</b>
-  </p>
+{% block content %}
+<h2>{{ item.title }}</h2>
+{% if session.user_id == item.user_id %}
+<p>
+  <a href="/edit_item/{{ item.id }}">Muokkaa</a>
+  <a href="/remove_item/{{ item.id }}">Poista</a>
+  <a href="/images/{{ item.id }}">Kuvat</a>
+</p>
+{% endif %}
+{% for image in images %}
+<img src="/image/{{ image.id }}" />
+{% endfor %}
+
+<p>
+  {{ item.description }}
+</p>
+<p>
+  Tavoitesumma: {{ item.target_sum }} €
+</p>
+{% if total_donations %}
+<p>
+  Rahaa kerätty: {{ total_donations }} €
+</p>
+<p>
+  Matkaa tavoitesummaan: {{ to_target_sum }} €
+</p>
+{% else %}
+<p>
+  Ei vielä yhtään rahaa kerätty
+</p>
+{% endif %}
+{% if category %}
+<p>
+  Kampanjan kategoria: {{ category }}    
+</p>
+{% endif %}
+<p>
+  Kampanjan perustaja: <a href="/user/{{ item.user_id }}">{{ item.username }}</a>
+</p>
+<h3>Lahjoitukset</h3>
+<ul>
+  {% for donation in donations %}
+  <li>{{ donation.amount }} €, <a href="/user/{{ donation.id }}">{{ donation.username }}</a></li>
   {% endfor %}
-  {% if session.user_id == item.user_id %}
+</ul>
+{% if session.user_id %}
+<h3>Uusi lahjoitus</h3>
+<form action="/create_donation" method="post">
+  Määrä:
   <p>
-    <a href="/edit_item/{{ item.id }}">Muokkaa</a>
-    <a href="/remove_item/{{ item.id }}">Poista</a>
-    <a href="/images/{{ item.id }}">Kuvat</a>
-  </p>
-  {% endif %}
-  {% for image in images %}
-  <img src="/image/{{ image.id }}" />
-  {% endfor %}
-
-  <p>
-    {{ item.description }}
-  </p>
-  <p>
-    Tavoitesumma: {{ item.target_sum }} €
-  </p>
-  {% if total_donations %}
-  <p>
-    Rahaa kerätty: {{ total_donations }} €
-  </p>
-  <p>
-    Matkaa tavoitesummaan: {{ to_target_sum }} €
-  </p>
-  {% else %}
-  <p>
-    Ei vielä yhtään rahaa kerätty
-  </p>
-  {% endif %}
-  {% if category %}
-  <p>
-    Kampanjan kategoria: {{ category }}    
-  </p>
-  {% endif %}
-  <p>
-    Kampanjan perustaja: <a href="/user/{{ item.user_id }}">{{ item.username }}</a>
-  </p>
-  <h2>Lahjoitukset</h2>
-  <ul>
-    {% for donation in donations %}
-    <li>{{ donation.amount }} €, <a href="/user/{{ donation.id }}">{{ donation.username }}</a></li>
-    {% endfor %}
-  </ul>
-  {% if session.user_id %}
-  <form action="/create_donation" method="post">
-    <p>
-      Lahjoita kampanjaan: <br />
-      <input type="number" name="donation_amount" min="0.05" step="0.05" size="8" required />€
-      <input type="submit" value="Lahjoita" />
-    <p/>
-    <input type="hidden" name="item_id" value="{{ item.id }}" />
-  </form>
-  {% endif %}
-  <p>
-    <a href="/">Takaisin</a>
-  </p>
-</body>
-
-</html>
+    <input type="number" name="donation_amount" min="0.05" step="0.05" size="8" required />€
+    <input type="submit" value="Lahjoita" />
+  <p/>
+  <input type="hidden" name="item_id" value="{{ item.id }}" />
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="/static/main.css">
+</head>
+
+<body>
+  <h1> Joukkorahoitus </h1>
+  {% for message in get_flashed_messages() %}
+  <p>
+    <b>{{ message }}</b>
+  </p>
+  {% endfor %}
+
+  {% if session.username %}
+  <p>
+    Olet kirjautunut nimellä {{ session.username }}
+  </p>
+  {% endif %}
+
+  <p>
+    <a href="/">Etusivu</a> |
+    <a href="/find_item">Etsi kampanja</a> |
+  {% if session.user_id %}
+    <a href="/new_item">Uusi Kampanja</a> |
+    <a href="/logout">Kirjaudu ulos</a> 
+  {% else %}
+    <a href="/register">Luo tunnus</a> |
+    <a href="/login">Kirjaudu sisään</a>
+  {% endif %}
+  </p>
+
+  {% block content %}{% endblock %}
+</body>
+
+</html>

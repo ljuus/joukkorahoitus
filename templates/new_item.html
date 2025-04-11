@@ -1,36 +1,31 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Uusi kampanja</title>
-</head>
+{% block title %}Uusi kampanja{% endblock %}
 
-<body>
-  <h1>Uusi kampanja</h1>
-  <form action="/create_item" method="post">
-    <p>
-      Otsikko: <br />
-      <input type="text" name="title" maxlength="50" required />
-    </p>
-    <p>
-      Kuvaus: <br />
-      <textarea name="description" rows="6" cols="60" maxlength="1000"  required ></textarea>
-    </p>
-    <p>
-      Tavoitesumma: <br />
-      <input type="number" name="target_sum" size="8" min="1" max="1000000000" required />€
-    </p>
-    <p>
-      Kategoria: <br />
-      <select name="category">
-        <option value="">(valitse)</option>
-        <option value="hyväntekeväisyys">hyväntekeväisyys</option>
-        <option value="taide">taide</option>
-        <option value="teknologia">teknologia</option>
-      </select>
-    </p>
-    <input type="submit" value="Luo kampanja" />
-  </form>
-</body>
-
-</html>
+{% block content %}
+<h1>Uusi kampanja</h1>
+<form action="/create_item" method="post">
+  <p>
+    Otsikko: <br />
+    <input type="text" name="title" maxlength="50" required />
+  </p>
+  <p>
+    Kuvaus: <br />
+    <textarea name="description" rows="6" cols="60" maxlength="1000"  required ></textarea>
+  </p>
+  <p>
+    Tavoitesumma: <br />
+    <input type="number" name="target_sum" size="8" min="1" max="1000000000" required />€
+  </p>
+  <p>
+    Kategoria: <br />
+    <select name="category">
+      <option value="">(valitse)</option>
+      <option value="hyväntekeväisyys">hyväntekeväisyys</option>
+      <option value="taide">taide</option>
+      <option value="teknologia">teknologia</option>
+    </select>
+  </p>
+  <input type="submit" value="Luo kampanja" />
+</form>
+{% endblock %}

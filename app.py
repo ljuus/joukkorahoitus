@@ -154,7 +154,7 @@ def remove_images():
     
     for image_id in request.form.getlist("image_id"):
         items.remove_image(item_id, image_id)
-
+        
     return redirect("/images/" + str(item_id))
 
 @app.route("/update_item", methods=["POST"])
