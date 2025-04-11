@@ -12,7 +12,7 @@
   <a href="/item/{{ item.id }}">{{ item.title }}</a> <br />
   Perustaja: <a href="/user/{{ item.user_id }}">{{ item.username }}</a> <br />
   Perustettu: {{ item.creation_date }} <br />
-  Tavoitesumma: {{ item.target_sum }} €
+  Tavoitesumma: {{ item.target_sum | num_format }} €
 </div>
 {% endfor %}
 {% endblock %}

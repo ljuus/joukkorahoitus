@@ -7,6 +7,13 @@ import config, users, items
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+@app.template_filter('num_format')
+def commafy(value):
+    try:
+        return f"{float(value):,.2f}"
+    except (ValueError, TypeError):
+        return value
+
 def require_login():
     if "user_id" not in session:
         return abort(403)
@@ -41,10 +48,14 @@ def show_item(item_id):
         abort(404)
     donations = items.get_donations(item_id)
     donations_sum = items.get_donations_sum(item_id)
+    target_sum = item["target_sum"]
     if donations_sum:
-        distance = item["target_sum"] - donations_sum
+        if target_sum - donations_sum <= 0:
+            distance = None
+        else:
+            distance = target_sum - donations_sum
     else:
-        distance = item["target_sum"]
+        distance = target_sum
     category = items.get_category(item_id)
     images = items.get_images(item_id)
     

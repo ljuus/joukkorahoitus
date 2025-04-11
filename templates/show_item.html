@@ -19,15 +19,15 @@
   {{ item.description }}
 </p>
 <p>
-  Tavoitesumma: {{ item.target_sum }} €
+  Tavoitesumma: {{ item.target_sum | num_format }} €
 </p>
 {% if donations %}
 <p>
-  Rahaa kerätty: {{ donations_sum }} €
+  Rahaa kerätty: {{ donations_sum | num_format }} €
 </p>
-{% if distance > 0 %}
+{% if distance %}
 <p>
-  Matkaa tavoitesummaan: {{ distance }} €
+  Matkaa tavoitesummaan: {{ distance | num_format }} €
 </p>
 {% else %}
 <p>
@@ -47,7 +47,7 @@
 {% if donations %}
 <ul>
   {% for donation in donations %}
-  <li>{{ donation.amount }} €, <a href="/user/{{ donation.id }}">{{ donation.username }}</a></li>
+  <li>{{ donation.amount | num_format }} €, <a href="/user/{{ donation.id }}">{{ donation.username }}</a></li>
   {% endfor %}
 </ul>
 {% else %}
