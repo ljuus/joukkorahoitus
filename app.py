@@ -41,18 +41,14 @@ def show_item(item_id):
         abort(404)
     donations = items.get_donations(item_id)
     donations_sum = items.get_donations_sum(item_id)
-
+    distance = item["target_sum"] - donations_sum
     category = items.get_category(item_id)
     images = items.get_images(item_id)
-    if donations_sum:
-        to_target_sum = round(item["target_sum"] - donations_sum, 2)
-    else:
-        to_target_sum = item["target_sum"]
     
-    return render_template("show_item.html", item=item, donations_sum=donations_sum, 
-                           to_target_sum=to_target_sum, category=category, donations=donations,
-                           images=images)
-
+    return render_template("show_item.html", item=item, donations=donations,
+                           category=category, images=images, donations_sum=donations_sum,
+                           distance=distance)
+                           
 @app.route("/new_item")
 def new_item():
     return render_template("new_item.html")
@@ -195,17 +191,11 @@ def remove_item(item_id):
 def create_donation():
     user_id = session["user_id"]
     item_id = request.form["item_id"]
-    amount = request.form["donation_amount"]
-    
-    try:
-        amount_cents =  round(float(amount) * 100)
-    except ValueError:
+    value = request.form["donation_amount"]
+    amount = float(value)
+    if amount > 1000000000:
         abort(403)
-    
-    if not 0.05 <= float(amount) <= 10**7:
-        abort(403)
-
-    items.add_donation(user_id, item_id, amount_cents)
+    items.add_donation(user_id, item_id, amount)
     flash("Lahjoitus onnistui")
     return redirect("/item/" + str(item_id))
 

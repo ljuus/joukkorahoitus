@@ -70,13 +70,10 @@ def get_donations(item_id):
     return db.query(sql, [item_id])
 
 def get_donations_sum(item_id):
-    sql = "SELECT SUM(amount) FROM donations, items WHERE items.id = donations.item_id AND items.id = ?"
-    result = db.query(sql, [item_id])[0][0]
-    
-    if result:
-        return round(result / 100, 2)
-    else:
-        return None
+    sql = """SELECT SUM(amount) FROM donations, items
+             WHERE items.id = donations.item_id AND items.id = ?"""
+    result = db.query(sql, [item_id])
+    return result[0][0] if result else None
     
 def get_images(item_id):
     sql = "SELECT id FROM item_images WHERE item_id = ?"

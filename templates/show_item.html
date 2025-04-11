@@ -21,17 +21,19 @@
 <p>
   Tavoitesumma: {{ item.target_sum }} €
 </p>
-{% if total_donations %}
+{% if donations %}
 <p>
-  Rahaa kerätty: {{ total_donations }} €
+  Rahaa kerätty: {{ donations_sum }} €
 </p>
+{% if distance > 0 %}
 <p>
-  Matkaa tavoitesummaan: {{ to_target_sum }} €
+  Matkaa tavoitesummaan: {{ distance }} €
 </p>
 {% else %}
 <p>
-  Ei vielä yhtään rahaa kerätty
+  Tavoite saavutettu!
 </p>
+{% endif %}
 {% endif %}
 {% if category %}
 <p>
@@ -42,11 +44,15 @@
   Kampanjan perustaja: <a href="/user/{{ item.user_id }}">{{ item.username }}</a>
 </p>
 <h3>Lahjoitukset</h3>
+{% if donations %}
 <ul>
   {% for donation in donations %}
   <li>{{ donation.amount }} €, <a href="/user/{{ donation.id }}">{{ donation.username }}</a></li>
   {% endfor %}
 </ul>
+{% else %}
+<p>Ei vielä yhtään lahjoitusta</p>
+{% endif %}
 {% if session.user_id %}
 <h3>Uusi lahjoitus</h3>
 <form action="/create_donation" method="post">

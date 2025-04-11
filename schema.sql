@@ -23,7 +23,7 @@ CREATE TABLE donations (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES users,
     item_id INTEGER REFERENCES items,
-    amount INTEGER,
+    amount NUMERIC,
     donation_date DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
