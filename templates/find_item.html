@@ -6,14 +6,15 @@
 <h2>Etsi kampanja</h2>
 <form action="/find_item" method="get">
   <p>
-    Hakusana: <input type="text" name="query" value="{{ query }}"/>
+    <label for="query">Hakusana:</label>
+    <input type="text" name="query" id="query" value="{{ query }}"/>
   </p>
   <input type="submit" value="Hae" />
 </form>
 
 {% if query %}
 {% if results %}
-<h2>Tulokset</h2>
+<h3>Tulokset</h3>
 <ul>
   {% for item in results %}
   <li><a href="/item/{{ item.id }}">{{ item.title }}</a></li>

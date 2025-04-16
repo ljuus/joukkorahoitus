@@ -8,11 +8,6 @@
 
 <body>
   <h1> Joukkorahoitus </h1>
-  {% for message in get_flashed_messages() %}
-  <p>
-    <b>{{ message }}</b>
-  </p>
-  {% endfor %}
 
   {% if session.username %}
   <p>
@@ -22,6 +17,9 @@
 
   <p>
     <a href="/">Etusivu</a> |
+  {% if session.user_id %}
+    <a href="/user/{{ session.user_id }}">Oma profiili</a> |
+  {% endif %}
     <a href="/find_item">Etsi kampanja</a> |
   {% if session.user_id %}
     <a href="/new_item">Uusi Kampanja</a> |
@@ -31,6 +29,11 @@
     <a href="/login">Kirjaudu sisään</a>
   {% endif %}
   </p>
+  {% for message in get_flashed_messages() %}
+  <div class="info">
+    <b>{{ message }}</b>
+  </div>
+  {% endfor %}
 
   {% block content %}{% endblock %}
 </body>

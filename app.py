@@ -2,13 +2,20 @@ import re
 import sqlite3
 from flask import Flask
 from flask import abort, make_response, flash, redirect, render_template, request, session
-import config, users, items 
+import config, users, items
+import markupsafe
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+@app.template_filter()
+def show_lines(content):
+    content = str(markupsafe.escape(content))
+    content = content.replace("\n", "<br />")
+    return markupsafe.Markup(content)
+
 @app.template_filter('num_format')
-def commafy(value):
+def num_format(value):
     try:
         return f"{float(value):,.2f}"
     except (ValueError, TypeError):
@@ -221,13 +228,13 @@ def register():
     
     if request.method == "POST":
         username = request.form["username"]
-        if len(username) > 30:
+        if not username or len(username) > 30:
             abort(403)
         password1 = request.form["password1"]
-        if len(password1) > 1000:
+        if not password1 or len(password1) > 1000:
             abort(403)
         password2 = request.form["password2"]
-        if len(password2) > 1000:
+        if not password2 or len(password2) > 1000:
             abort(403)
         if password1 != password2:
             flash("VIRHE: salasanat eivät ole samat")
